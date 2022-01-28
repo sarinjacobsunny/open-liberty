@@ -33,6 +33,7 @@ import com.ibm.ws.ui.internal.rest.exceptions.UserNotAuthorizedException;
 import com.ibm.ws.ui.internal.v1.IFeatureToolService;
 import com.ibm.wsspi.rest.handler.RESTRequest;
 import com.ibm.wsspi.rest.handler.RESTResponse;
+import com.ibm.ws.ui.internal.v1.utils.Utils;
 
 /**
  * <p>This class is designed to hold icon serving methods that different parts of
@@ -81,6 +82,9 @@ public class IconRestHandler extends CommonJSONRESTHandler implements V1Constant
         if (!isAuthorizedDefault(request, response)) {
             throw new UserNotAuthorizedException();
         }
+        if(!Utils.isValidJsonString(childResource)) {
+            throw new RESTException(HTTP_INTERNAL_ERROR);
+        }
         return processChild(request, false);
     }
 
@@ -88,6 +92,12 @@ public class IconRestHandler extends CommonJSONRESTHandler implements V1Constant
     public Object getGrandchild(final RESTRequest request, final RESTResponse response, final String child, final String grandchild) throws RESTException {
         if (!isAuthorizedDefault(request, response)) {
             throw new UserNotAuthorizedException();
+        }
+        if(!Utils.isValidJsonString(child)) {
+            throw new RESTException(HTTP_INTERNAL_ERROR);
+        }
+        if(!Utils.isValidJsonString(grandchild)) {
+            throw new RESTException(HTTP_INTERNAL_ERROR);
         }
         return processChild(request, true);
     }

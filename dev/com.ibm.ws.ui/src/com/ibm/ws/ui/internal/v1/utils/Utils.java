@@ -10,6 +10,16 @@
  *******************************************************************************/
 package com.ibm.ws.ui.internal.v1.utils;
 
+
+// import com.google.gson.Gson;
+
+// import com.google.gson.GsonBuilder;
+// import com.google.gson.JsonArray;
+// import com.google.gson.JsonElement;
+// import com.google.gson.JsonObject;
+// import com.google.gson.JsonParser;
+// import com.google.gson.JsonPrimitive;
+
 import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -135,6 +145,20 @@ public class Utils {
             sb.append(String.format("%02x", b & 0xff));
         }
         return sb.toString();
+    }
+
+
+    // private static final Gson gson = new Gson();
+
+    public static boolean isValidJsonString(String inputString) {
+        return true;
+        // try {
+        // System.out.println("inputString to be validated is :::::::: " + inputString);
+        // // gson.fromJson(inputString, Object.class);
+        //     return true;
+        // } catch(Exception ex) {
+        //     return false;
+        // }
     }
 
 }

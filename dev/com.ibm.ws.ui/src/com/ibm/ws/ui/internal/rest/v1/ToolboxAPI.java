@@ -41,6 +41,7 @@ import com.ibm.ws.ui.internal.v1.pojo.ToolEntry;
 import com.ibm.ws.ui.internal.validation.InvalidToolException;
 import com.ibm.wsspi.rest.handler.RESTRequest;
 import com.ibm.wsspi.rest.handler.RESTResponse;
+import com.ibm.ws.ui.internal.v1.utils.Utils;
 
 /**
  * <p>Defines the toolbox API for the version 1 of the adminCenter REST API.</p>
@@ -150,6 +151,9 @@ public class ToolboxAPI extends CommonJSONRESTHandler implements V1Constants {
         if (!isAuthorizedAdminOrReader(request, response)) {
             throw new UserNotAuthorizedException();
         }
+        if(!Utils.isValidJsonString(child)) {
+            throw new RESTException(HTTP_INTERNAL_ERROR);
+        }
         if (CHILD_RESOURCE_PREFERENCES.equals(child)) {
             return applyFilter(request, getToolbox(request).getPreferences());
         } else if (CHILD_RESOURCE_BOOKMARKS.equals(child)) {
@@ -195,6 +199,10 @@ public class ToolboxAPI extends CommonJSONRESTHandler implements V1Constants {
             throw new UserNotAuthorizedException();
         }
 
+        if(!Utils.isValidJsonString(child)) {
+            throw new RESTException(HTTP_INTERNAL_ERROR);
+        }
+
         final String toolId = grandchild;
         if (CHILD_RESOURCE_TOOL_ENTRIES.equals(child)) {
             return handleToolResponse(request, toolId, getToolbox(request).getToolEntry(toolId));
@@ -221,6 +229,9 @@ public class ToolboxAPI extends CommonJSONRESTHandler implements V1Constants {
     public POSTResponse postChild(RESTRequest request, RESTResponse response, final String child) throws RESTException {
         if (!isAuthorizedAdminOrReader(request, response)) {
             throw new UserNotAuthorizedException();
+        }
+        if(!Utils.isValidJsonString(child)) {
+            throw new RESTException(HTTP_INTERNAL_ERROR);
         }
         if (CHILD_RESOURCE_TOOL_ENTRIES.equals(child)) {
             ToolEntry toAdd = readJSONPayload(request, ToolEntry.class);
@@ -271,6 +282,9 @@ public class ToolboxAPI extends CommonJSONRESTHandler implements V1Constants {
     public Object putChild(RESTRequest request, RESTResponse response, String child) throws RESTException {
         if (!isAuthorizedAdminOrReader(request, response)) {
             throw new UserNotAuthorizedException();
+        }
+        if(!Utils.isValidJsonString(child)) {
+            throw new RESTException(HTTP_INTERNAL_ERROR);
         }
         if (CHILD_RESOURCE_PREFERENCES.equals(child)) {
             IToolbox toolbox = getToolbox(request);
@@ -326,6 +340,10 @@ public class ToolboxAPI extends CommonJSONRESTHandler implements V1Constants {
     public Object deleteGrandchild(RESTRequest request, RESTResponse response, String child, final String grandchild) throws RESTException {
         if (!isAuthorizedAdminOrReader(request, response)) {
             throw new UserNotAuthorizedException();
+        }
+
+        if(!Utils.isValidJsonString(child)) {
+            throw new RESTException(HTTP_INTERNAL_ERROR);
         }
 
         String toolId = grandchild;

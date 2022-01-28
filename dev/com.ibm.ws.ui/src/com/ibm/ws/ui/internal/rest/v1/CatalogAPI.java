@@ -34,6 +34,7 @@ import com.ibm.ws.ui.internal.v1.pojo.Message;
 import com.ibm.ws.ui.internal.validation.InvalidToolException;
 import com.ibm.wsspi.rest.handler.RESTRequest;
 import com.ibm.wsspi.rest.handler.RESTResponse;
+import com.ibm.ws.ui.internal.v1.utils.Utils;
 
 /**
  * <p>Defines the catalog API for the version 1 of the adminCenter REST API.</p>
@@ -132,6 +133,9 @@ public class CatalogAPI extends CommonJSONRESTHandler implements V1Constants {
         if (!isAuthorizedDefault(request, response)) {
             throw new UserNotAuthorizedException();
         }
+        if(!Utils.isValidJsonString(child)) {
+            throw new RESTException(HTTP_INTERNAL_ERROR);
+        }
         if (CHILD_RESOURCE_BOOKMARKS.equals(child)) {
             return applyFilter(request, getCatalog().getBookmarks());
         } else if (CHILD_RESOURCE_FEATURE_TOOLS.equals(child)) {
@@ -174,6 +178,13 @@ public class CatalogAPI extends CommonJSONRESTHandler implements V1Constants {
             throw new UserNotAuthorizedException();
         }
 
+        if(!Utils.isValidJsonString(child)) {
+            throw new RESTException(HTTP_INTERNAL_ERROR);
+        }
+        if(!Utils.isValidJsonString(grandchild)) {
+            throw new RESTException(HTTP_INTERNAL_ERROR);
+        }
+
         final String toolId = grandchild;
         if (CHILD_RESOURCE_BOOKMARKS.equals(child)) {
             return handleToolResponse(request, toolId, getCatalog().getBookmark(toolId));
@@ -199,6 +210,9 @@ public class CatalogAPI extends CommonJSONRESTHandler implements V1Constants {
     public POSTResponse postChild(RESTRequest request, RESTResponse response, String child) throws RESTException {
         if (!isAuthorizedDefault(request, response)) {
             throw new UserNotAuthorizedException();
+        }
+        if(!Utils.isValidJsonString(child)) {
+            throw new RESTException(HTTP_INTERNAL_ERROR);
         }
         if (CHILD_RESOURCE_BOOKMARKS.equals(child)) {
             Bookmark bookmark = readJSONPayload(request, Bookmark.class);
@@ -250,6 +264,13 @@ public class CatalogAPI extends CommonJSONRESTHandler implements V1Constants {
     public Object deleteGrandchild(RESTRequest request, RESTResponse response, String child, String grandchild) throws RESTException {
         if (!isAuthorizedDefault(request, response)) {
             throw new UserNotAuthorizedException();
+        }
+
+        if(!Utils.isValidJsonString(child)) {
+            throw new RESTException(HTTP_INTERNAL_ERROR);
+        }
+        if(!Utils.isValidJsonString(grandchild)) {
+            throw new RESTException(HTTP_INTERNAL_ERROR);
         }
 
         String toolId = grandchild;

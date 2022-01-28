@@ -110,6 +110,9 @@ public class ToolDataAPI extends CommonRESTHandler implements V1Constants {
         if (!isAuthorizedAdminOrReader(request, response)) {
             throw new UserNotAuthorizedException();
         }
+        if(!Utils.isValidJsonString(child)) {
+            throw new RESTException(HTTP_INTERNAL_ERROR);
+        }
         if (isKnownChildResource(child, request)) {
             toolDataService.promoteIfPossible(request.getUserPrincipal().getName(), child);
             Object object = toolDataService.getToolData(request.getUserPrincipal().getName(), child);
@@ -142,6 +145,9 @@ public class ToolDataAPI extends CommonRESTHandler implements V1Constants {
     public POSTResponse postChild(RESTRequest request, RESTResponse response, String child) throws RESTException {
         if (!isAuthorizedAdminOrReader(request, response)) {
             throw new UserNotAuthorizedException();
+        }
+        if(!Utils.isValidJsonString(child)) {
+            throw new RESTException(HTTP_INTERNAL_ERROR);
         }
         if (isKnownChildResource(child, request)) {
             try {
@@ -187,6 +193,9 @@ public class ToolDataAPI extends CommonRESTHandler implements V1Constants {
         if (!isAuthorizedAdminOrReader(request, response)) {
             throw new UserNotAuthorizedException();
         }
+        if(!Utils.isValidJsonString(child)) {
+            throw new RESTException(HTTP_INTERNAL_ERROR);
+        }
         if (isKnownChildResource(child, request)) {
             String uid = request.getUserPrincipal().getName();
             boolean exists = toolDataService.exists(uid, child);
@@ -225,6 +234,9 @@ public class ToolDataAPI extends CommonRESTHandler implements V1Constants {
     public Object putChild(final RESTRequest request, final RESTResponse response, final String child) throws RESTException {
         if (!isAuthorizedAdminOrReader(request, response)) {
             throw new UserNotAuthorizedException();
+        }
+        if(!Utils.isValidJsonString(child)) {
+            throw new RESTException(HTTP_INTERNAL_ERROR);
         }
         if (isKnownChildResource(child, request)) {
 
