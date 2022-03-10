@@ -82,9 +82,11 @@ public class IconRestHandler extends CommonJSONRESTHandler implements V1Constant
         if (!isAuthorizedDefault(request, response)) {
             throw new UserNotAuthorizedException();
         }
-        if(!Utils.isValidJsonString(childResource)) {
-            throw new RESTException(HTTP_INTERNAL_ERROR);
-        }
+
+        // if(!Utils.isValidJsonString(childResource, "childResource")) {
+        //     throw new RESTException(HTTP_INTERNAL_ERROR);
+        // }
+
         return processChild(request, false);
     }
 
@@ -93,16 +95,15 @@ public class IconRestHandler extends CommonJSONRESTHandler implements V1Constant
         if (!isAuthorizedDefault(request, response)) {
             throw new UserNotAuthorizedException();
         }
-        if(!Utils.isValidJsonString(child)) {
-            throw new RESTException(HTTP_INTERNAL_ERROR);
-        }
-        if(!Utils.isValidJsonString(grandchild)) {
-            throw new RESTException(HTTP_INTERNAL_ERROR);
-        }
+        
+        // if(!Utils.isValidJsonString(child, "child")) {
+        //     throw new RESTException(HTTP_INTERNAL_ERROR);
+        // }
+
         return processChild(request, true);
     }
 
-    private Object processChild(final RESTRequest request, final boolean isGrandChild) {
+    private Object processChild(final RESTRequest request, final boolean isGrandChild) throws RESTException {
         Object responseResult = null;
 
         // If it is calling from getChild, get the last element in the URI. This should be the featureName.
@@ -120,6 +121,11 @@ public class IconRestHandler extends CommonJSONRESTHandler implements V1Constant
         // If it contains size=nnn then find the icon that matches the requested size. Otherwise get the unsized icon.
         String queryString = request.getQueryString();
         if (queryString != null && sizesRestURI.equalsIgnoreCase(queryString)) {
+        
+            if(!Utils.isValidJsonString(queryString, "queryString in if block")) {
+                throw new RESTException(HTTP_INTERNAL_ERROR);
+            }
+
             // If the queryString is sizes then return the list of sizes of icons for the requires feature.
             if (TraceComponent.isAnyTracingEnabled() && tc.isDebugEnabled())
                 Tr.debug(tc, "Finding icon sizes for " + featureName);
@@ -128,6 +134,11 @@ public class IconRestHandler extends CommonJSONRESTHandler implements V1Constant
             // If the queryString contains size=nnn then find the icon that matches the requested size. If no size is listed then
             // get the unsized icon. If there is no icon found we'll return a default equivalent.
             if (queryString != null && queryString.toLowerCase().startsWith("size=")) {
+        
+                if(!Utils.isValidJsonString(queryString, "queryString in else block")) {
+                    throw new RESTException(HTTP_INTERNAL_ERROR);
+                }
+
                 if (TraceComponent.isAnyTracingEnabled() && tc.isDebugEnabled())
                     Tr.debug(tc, "Finding icon size " + queryString.substring(5) + " for " + featureName);
                 responseResult = getIcon(featureName, queryString.substring(5));

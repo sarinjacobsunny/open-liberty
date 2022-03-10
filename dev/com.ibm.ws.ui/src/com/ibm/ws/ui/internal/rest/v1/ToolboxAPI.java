@@ -151,9 +151,11 @@ public class ToolboxAPI extends CommonJSONRESTHandler implements V1Constants {
         if (!isAuthorizedAdminOrReader(request, response)) {
             throw new UserNotAuthorizedException();
         }
-        if(!Utils.isValidJsonString(child)) {
-            throw new RESTException(HTTP_INTERNAL_ERROR);
-        }
+
+        // if(!Utils.isValidJsonString(child, "child")) {
+        //     throw new RESTException(HTTP_INTERNAL_ERROR);
+        // }
+
         if (CHILD_RESOURCE_PREFERENCES.equals(child)) {
             return applyFilter(request, getToolbox(request).getPreferences());
         } else if (CHILD_RESOURCE_BOOKMARKS.equals(child)) {
@@ -199,9 +201,9 @@ public class ToolboxAPI extends CommonJSONRESTHandler implements V1Constants {
             throw new UserNotAuthorizedException();
         }
 
-        if(!Utils.isValidJsonString(child)) {
-            throw new RESTException(HTTP_INTERNAL_ERROR);
-        }
+        // if(!Utils.isValidJsonString(child, "child")) {
+        //     throw new RESTException(HTTP_INTERNAL_ERROR);
+        // } 
 
         final String toolId = grandchild;
         if (CHILD_RESOURCE_TOOL_ENTRIES.equals(child)) {
@@ -230,11 +232,18 @@ public class ToolboxAPI extends CommonJSONRESTHandler implements V1Constants {
         if (!isAuthorizedAdminOrReader(request, response)) {
             throw new UserNotAuthorizedException();
         }
-        if(!Utils.isValidJsonString(child)) {
-            throw new RESTException(HTTP_INTERNAL_ERROR);
-        }
+
+        // if(!Utils.isValidJsonString(child, "child")) {
+        //     throw new RESTException(HTTP_INTERNAL_ERROR);
+        // }
+
         if (CHILD_RESOURCE_TOOL_ENTRIES.equals(child)) {
             ToolEntry toAdd = readJSONPayload(request, ToolEntry.class);
+
+            if(!Utils.isValidJsonString(toAdd.toString(), "toAdd.toString() in if block")) {
+                throw new RESTException(HTTP_INTERNAL_ERROR);
+            }
+
             try {
                 ToolEntry added = getToolbox(request).addToolEntry(toAdd);
                 POSTResponse postResponse = new POSTResponse();
@@ -253,6 +262,11 @@ public class ToolboxAPI extends CommonJSONRESTHandler implements V1Constants {
             }
         } else if (CHILD_RESOURCE_BOOKMARKS.equals(child)) {
             Bookmark toAdd = readJSONPayload(request, Bookmark.class);
+
+            if(!Utils.isValidJsonString(toAdd.toString(), "toAdd.toString() in else if block")) {
+                throw new RESTException(HTTP_INTERNAL_ERROR);
+            }
+
             try {
                 ITool added = getToolbox(request).addBookmark(toAdd);
                 POSTResponse postResponse = new POSTResponse();
@@ -283,16 +297,28 @@ public class ToolboxAPI extends CommonJSONRESTHandler implements V1Constants {
         if (!isAuthorizedAdminOrReader(request, response)) {
             throw new UserNotAuthorizedException();
         }
-        if(!Utils.isValidJsonString(child)) {
-            throw new RESTException(HTTP_INTERNAL_ERROR);
-        }
+
+        // if(!Utils.isValidJsonString(child, "child")) {
+        //     throw new RESTException(HTTP_INTERNAL_ERROR);
+        // }
+
         if (CHILD_RESOURCE_PREFERENCES.equals(child)) {
             IToolbox toolbox = getToolbox(request);
             @SuppressWarnings("unchecked")
             Map<String, Object> preferences = readJSONPayload(request, Map.class);
+
+            if(!Utils.isValidJsonString(preferences.toString(), "preferences.toString()")) {
+                throw new RESTException(HTTP_INTERNAL_ERROR);
+            }
+
             return toolbox.updatePreferences(preferences);
         } else if (CHILD_RESOURCE_TOOL_ENTRIES.equals(child)) {
             ToolEntry[] listEntries = readJSONPayload(request, ToolEntry[].class);
+
+            if(!Utils.isValidJsonString(listEntries.toString(), "listEntries.toString()")) {
+                throw new RESTException(HTTP_INTERNAL_ERROR);
+            }
+
             List<ToolEntry> toolEntries = new ArrayList<ToolEntry>();
             toolEntries.addAll(Arrays.asList(listEntries));
             try {
@@ -342,9 +368,9 @@ public class ToolboxAPI extends CommonJSONRESTHandler implements V1Constants {
             throw new UserNotAuthorizedException();
         }
 
-        if(!Utils.isValidJsonString(child)) {
-            throw new RESTException(HTTP_INTERNAL_ERROR);
-        }
+        // if(!Utils.isValidJsonString(child, "child")) {
+        //     throw new RESTException(HTTP_INTERNAL_ERROR);
+        // } 
 
         String toolId = grandchild;
         if (CHILD_RESOURCE_BOOKMARKS.equals(child)) {

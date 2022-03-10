@@ -110,13 +110,15 @@ public class ToolDataAPI extends CommonRESTHandler implements V1Constants {
         if (!isAuthorizedAdminOrReader(request, response)) {
             throw new UserNotAuthorizedException();
         }
-        if(!Utils.isValidJsonString(child)) {
-            throw new RESTException(HTTP_INTERNAL_ERROR);
-        }
         if (isKnownChildResource(child, request)) {
             toolDataService.promoteIfPossible(request.getUserPrincipal().getName(), child);
             Object object = toolDataService.getToolData(request.getUserPrincipal().getName(), child);
             if (object != null) {
+
+                if(!Utils.isValidJsonString(object.toString(), "object.toString()")) {
+                    throw new RESTException(HTTP_INTERNAL_ERROR);
+                }
+
                 String md5 = Utils.getMD5String(object.toString());
                 response.setResponseHeader(HTTP_HEADER_ETAG, md5);
                 return object;
@@ -146,9 +148,7 @@ public class ToolDataAPI extends CommonRESTHandler implements V1Constants {
         if (!isAuthorizedAdminOrReader(request, response)) {
             throw new UserNotAuthorizedException();
         }
-        if(!Utils.isValidJsonString(child)) {
-            throw new RESTException(HTTP_INTERNAL_ERROR);
-        }
+
         if (isKnownChildResource(child, request)) {
             try {
                 toolDataService.promoteIfPossible(request.getUserPrincipal().getName(), child);
@@ -163,6 +163,11 @@ public class ToolDataAPI extends CommonRESTHandler implements V1Constants {
                 String td = toolDataService.addToolData(request.getUserPrincipal().getName(), child, tooldata);
                 if (td == null)
                     throw new RESTException(HTTP_INTERNAL_ERROR);
+
+                if(!Utils.isValidJsonString(td, "td")) {
+                    throw new RESTException(HTTP_INTERNAL_ERROR);
+                }
+
                 POSTResponse postResponse = new POSTResponse();
                 postResponse.createdURL = request.getURL() + "/" + child;
                 postResponse.jsonPayload = td;
@@ -193,15 +198,17 @@ public class ToolDataAPI extends CommonRESTHandler implements V1Constants {
         if (!isAuthorizedAdminOrReader(request, response)) {
             throw new UserNotAuthorizedException();
         }
-        if(!Utils.isValidJsonString(child)) {
-            throw new RESTException(HTTP_INTERNAL_ERROR);
-        }
         if (isKnownChildResource(child, request)) {
             String uid = request.getUserPrincipal().getName();
             boolean exists = toolDataService.exists(uid, child);
             if (!exists) {
                 throw new NoSuchResourceException();
             }
+
+            if(!Utils.isValidJsonString(uid, "uid")) {
+                throw new RESTException(HTTP_INTERNAL_ERROR);
+            }
+                
             if (toolDataService.deleteToolData(uid, child))
                 return "";
             else
@@ -235,9 +242,6 @@ public class ToolDataAPI extends CommonRESTHandler implements V1Constants {
         if (!isAuthorizedAdminOrReader(request, response)) {
             throw new UserNotAuthorizedException();
         }
-        if(!Utils.isValidJsonString(child)) {
-            throw new RESTException(HTTP_INTERNAL_ERROR);
-        }
         if (isKnownChildResource(child, request)) {
 
             try {
@@ -250,6 +254,11 @@ public class ToolDataAPI extends CommonRESTHandler implements V1Constants {
                     throw new NoSuchResourceException();
                 }
                 String originalData = toolDataService.getToolData(request.getUserPrincipal().getName(), child);
+
+                if(!Utils.isValidJsonString(originalData.toString(), "originalData.toString()")) {
+                    throw new RESTException(HTTP_INTERNAL_ERROR);
+                }
+
                 String md5 = Utils.getMD5String(originalData.toString());
 
                 if (md5In.equals(md5) == false) {
@@ -263,6 +272,11 @@ public class ToolDataAPI extends CommonRESTHandler implements V1Constants {
 
                 if (td == null)
                     throw new RESTException(HTTP_INTERNAL_ERROR);
+
+                if(!Utils.isValidJsonString(td, "td")) {
+                    throw new RESTException(HTTP_INTERNAL_ERROR);
+                }
+                
                 md5 = Utils.getMD5String(td);
                 response.setResponseHeader(HTTP_HEADER_ETAG, md5);
 
