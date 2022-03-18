@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2013, 2021 IBM Corporation and others.
+ * Copyright (c) 2013, 2022 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -12,30 +12,6 @@ package com.ibm.ws.ui.internal.v1.utils;
 
 import com.google.gson.JsonParser;
 import com.google.gson.JsonSyntaxException;
-
-// import com.google.gson.Gson;
-// import com.google.gson.GsonBuilder;
-
-// import com.google.gson;
-// import com.ibm.ws.com.google.gson;
-// import com.ibm.ws.com.google.gson.*;
-// import com.google.gson.*;
-// import com.google.gson.Gson;
-// import com.google.gson.GsonBuilder;
-
-// import com.google.gson.JsonArray;
-// import com.google.gson.JsonElement;
-// import com.google.gson.JsonObject;
-// import com.google.gson.JsonParser;
-// import com.google.gson.JsonPrimitive;
-
-
-// import com.google.gson.Gson;
-// import com.google.gson.JsonArray;
-// import com.google.gson.JsonElement;
-// import com.google.gson.JsonPrimitive;
-// import com.google.gson.reflect.TypeToken;
-
 import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -170,7 +146,7 @@ public class Utils {
      * @param inputString The input string
      * @return Boolean, true if input string is valid JSON.
      */
-    public static boolean isValidJsonString(String inputString, String source) {
+    public static boolean isValidJsonString(String inputString) {
         boolean isValid = false;
 
         try {
@@ -183,61 +159,6 @@ public class Utils {
             isValid = false;
         }
 
-        System.out.println("\n\n" + 
-            "SYSOUT isValidJsonString " + 
-            " \n::: Class: " + Thread.currentThread().getStackTrace()[2].getClassName() + 
-            " \n::: Method:" + Thread.currentThread().getStackTrace()[2].getMethodName() + 
-            " \n::: Source: " + source + 
-            " \n::: inputString: " + inputString + 
-            " \n::: isValid: " + isValid + 
-            "\n\n"
-        );
-
-        // isValidJsonStringTest1(inputString);
-        // isValidJsonStringTest2(inputString);
-        // isValidJsonStringTest3(inputString);
-
-        return true;
+        return isValid;
     }
-
-    // public static void isValidJsonStringTest1(String inputString) {
-    //     boolean isValid = false;
-    //     try {
-    //         JsonParser parser = new JsonParser();
-    //         parser.parse(inputString); // throws JsonSyntaxException
-    //         isValid = true;
-    //     } catch(JsonSyntaxException e){
-    //         isValid = false;
-    //     } catch (Exception e) {
-    //         isValid = false;
-    //     }
-    //     System.out.println("Test 1 ::: isValidJsonString ::: isValid: " + isValid + " ::: inputString: " + inputString);
-    // }
-
-    // public static void isValidJsonStringTest2(String inputString) {
-    //     boolean isValid = false;
-    //     try {
-    //         Gson gson = new Gson();
-    //     gson.fromJson(inputString, Object.class);
-    //         isValid = true;
-    //     } catch(Exception ex) {
-    //         isValid = false;
-    //     } 
-    //     System.out.println("Test 2 ::: isValidJsonString ::: isValid: " + isValid + " ::: inputString: " + inputString);
-    // }
-
-    // public static void isValidJsonStringTest3(String inputString) {
-    //     boolean isValid = false;
-    //      try{
-    //         GsonBuilder builder = new GsonBuilder(); 
-    //         // builder.setPrettyPrinting(); 
-    //         Gson gson = builder.create(); 
-    //         gson.fromJson(inputString, Object.class); 
-    //         isValid = true;
-    //     } catch (Exception e) {
-    //         isValid = false;
-    //     }
-    //     System.out.println("Test 3 ::: isValidJsonString ::: isValid: " + isValid + " ::: inputString: " + inputString);
-    // }
-
 }

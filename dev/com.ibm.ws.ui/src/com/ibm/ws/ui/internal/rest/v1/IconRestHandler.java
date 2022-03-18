@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2014 IBM Corporation and others.
+ * Copyright (c) 2014, 2022 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -82,11 +82,6 @@ public class IconRestHandler extends CommonJSONRESTHandler implements V1Constant
         if (!isAuthorizedDefault(request, response)) {
             throw new UserNotAuthorizedException();
         }
-
-        // if(!Utils.isValidJsonString(childResource, "childResource")) {
-        //     throw new RESTException(HTTP_INTERNAL_ERROR);
-        // }
-
         return processChild(request, false);
     }
 
@@ -95,11 +90,6 @@ public class IconRestHandler extends CommonJSONRESTHandler implements V1Constant
         if (!isAuthorizedDefault(request, response)) {
             throw new UserNotAuthorizedException();
         }
-        
-        // if(!Utils.isValidJsonString(child, "child")) {
-        //     throw new RESTException(HTTP_INTERNAL_ERROR);
-        // }
-
         return processChild(request, true);
     }
 
@@ -121,8 +111,7 @@ public class IconRestHandler extends CommonJSONRESTHandler implements V1Constant
         // If it contains size=nnn then find the icon that matches the requested size. Otherwise get the unsized icon.
         String queryString = request.getQueryString();
         if (queryString != null && sizesRestURI.equalsIgnoreCase(queryString)) {
-        
-            if(!Utils.isValidJsonString(queryString, "queryString in if block")) {
+            if(!Utils.isValidJsonString(queryString)) {
                 throw new RESTException(HTTP_INTERNAL_ERROR);
             }
 
@@ -134,11 +123,10 @@ public class IconRestHandler extends CommonJSONRESTHandler implements V1Constant
             // If the queryString contains size=nnn then find the icon that matches the requested size. If no size is listed then
             // get the unsized icon. If there is no icon found we'll return a default equivalent.
             if (queryString != null && queryString.toLowerCase().startsWith("size=")) {
-        
-                if(!Utils.isValidJsonString(queryString, "queryString in else block")) {
+                if(!Utils.isValidJsonString(queryString)) {
                     throw new RESTException(HTTP_INTERNAL_ERROR);
                 }
-
+                
                 if (TraceComponent.isAnyTracingEnabled() && tc.isDebugEnabled())
                     Tr.debug(tc, "Finding icon size " + queryString.substring(5) + " for " + featureName);
                 responseResult = getIcon(featureName, queryString.substring(5));

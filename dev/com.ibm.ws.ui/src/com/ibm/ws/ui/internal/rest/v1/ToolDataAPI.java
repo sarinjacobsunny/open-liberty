@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2015 IBM Corporation and others.
+ * Copyright (c) 2015, 2022 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -114,11 +114,10 @@ public class ToolDataAPI extends CommonRESTHandler implements V1Constants {
             toolDataService.promoteIfPossible(request.getUserPrincipal().getName(), child);
             Object object = toolDataService.getToolData(request.getUserPrincipal().getName(), child);
             if (object != null) {
-
-                if(!Utils.isValidJsonString(object.toString(), "object.toString()")) {
+                if(!Utils.isValidJsonString(object.toString())) {
                     throw new RESTException(HTTP_INTERNAL_ERROR);
                 }
-
+                
                 String md5 = Utils.getMD5String(object.toString());
                 response.setResponseHeader(HTTP_HEADER_ETAG, md5);
                 return object;
@@ -148,7 +147,6 @@ public class ToolDataAPI extends CommonRESTHandler implements V1Constants {
         if (!isAuthorizedAdminOrReader(request, response)) {
             throw new UserNotAuthorizedException();
         }
-
         if (isKnownChildResource(child, request)) {
             try {
                 toolDataService.promoteIfPossible(request.getUserPrincipal().getName(), child);
@@ -161,10 +159,11 @@ public class ToolDataAPI extends CommonRESTHandler implements V1Constants {
                 String tooldata = getReaderContents(request.getInputStream(), POST_MAX_PLAIN_TEXT_SIZE);
 
                 String td = toolDataService.addToolData(request.getUserPrincipal().getName(), child, tooldata);
-                if (td == null)
+                if (td == null) {
                     throw new RESTException(HTTP_INTERNAL_ERROR);
+                }
 
-                if(!Utils.isValidJsonString(td, "td")) {
+                if(!Utils.isValidJsonString(td)) {
                     throw new RESTException(HTTP_INTERNAL_ERROR);
                 }
 
@@ -204,11 +203,6 @@ public class ToolDataAPI extends CommonRESTHandler implements V1Constants {
             if (!exists) {
                 throw new NoSuchResourceException();
             }
-
-            if(!Utils.isValidJsonString(uid, "uid")) {
-                throw new RESTException(HTTP_INTERNAL_ERROR);
-            }
-                
             if (toolDataService.deleteToolData(uid, child))
                 return "";
             else
@@ -255,7 +249,7 @@ public class ToolDataAPI extends CommonRESTHandler implements V1Constants {
                 }
                 String originalData = toolDataService.getToolData(request.getUserPrincipal().getName(), child);
 
-                if(!Utils.isValidJsonString(originalData.toString(), "originalData.toString()")) {
+                if(!Utils.isValidJsonString(originalData.toString())) {
                     throw new RESTException(HTTP_INTERNAL_ERROR);
                 }
 
@@ -273,7 +267,7 @@ public class ToolDataAPI extends CommonRESTHandler implements V1Constants {
                 if (td == null)
                     throw new RESTException(HTTP_INTERNAL_ERROR);
 
-                if(!Utils.isValidJsonString(td, "td")) {
+                if(!Utils.isValidJsonString(td)) {
                     throw new RESTException(HTTP_INTERNAL_ERROR);
                 }
                 

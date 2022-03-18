@@ -133,11 +133,6 @@ public class CatalogAPI extends CommonJSONRESTHandler implements V1Constants {
         if (!isAuthorizedDefault(request, response)) {
             throw new UserNotAuthorizedException();
         }
-
-        // if(!Utils.isValidJsonString(child, "child")) {
-        //     throw new RESTException(HTTP_INTERNAL_ERROR);
-        // }
-
         if (CHILD_RESOURCE_BOOKMARKS.equals(child)) {
             return applyFilter(request, getCatalog().getBookmarks());
         } else if (CHILD_RESOURCE_FEATURE_TOOLS.equals(child)) {
@@ -179,11 +174,6 @@ public class CatalogAPI extends CommonJSONRESTHandler implements V1Constants {
         if (!isAuthorizedDefault(request, response)) {
             throw new UserNotAuthorizedException();
         }
-
-        // if(!Utils.isValidJsonString(child, "child")) {
-        //     throw new RESTException(HTTP_INTERNAL_ERROR);
-        // } 
-
         final String toolId = grandchild;
         if (CHILD_RESOURCE_BOOKMARKS.equals(child)) {
             return handleToolResponse(request, toolId, getCatalog().getBookmark(toolId));
@@ -210,11 +200,6 @@ public class CatalogAPI extends CommonJSONRESTHandler implements V1Constants {
         if (!isAuthorizedDefault(request, response)) {
             throw new UserNotAuthorizedException();
         }
-
-        // if(!Utils.isValidJsonString(child, "child")) {
-        //     throw new RESTException(HTTP_INTERNAL_ERROR);
-        // }
-
         if (CHILD_RESOURCE_BOOKMARKS.equals(child)) {
             Bookmark bookmark = readJSONPayload(request, Bookmark.class);
             try {
@@ -266,11 +251,6 @@ public class CatalogAPI extends CommonJSONRESTHandler implements V1Constants {
         if (!isAuthorizedDefault(request, response)) {
             throw new UserNotAuthorizedException();
         }
-
-        // if(!Utils.isValidJsonString(child, "child")) {
-        //     throw new RESTException(HTTP_INTERNAL_ERROR);
-        // } 
-
         String toolId = grandchild;
         if (CHILD_RESOURCE_BOOKMARKS.equals(child)) {
             ITool deletedTool = getCatalog().deleteBookmark(toolId);
